@@ -1,14 +1,28 @@
-trigger CaseTrigger on Case (after insert){
+/* trigger CaseTrigger on Case (after insert){
     CaseTriggerHandler.caseCreated(trigger.new);
 }
+ */
 
 
-
+ /* Show the message as 'Case origin is changed for [Case Number]' whenever case origin
+field value is changed. */
 /* trigger CaseTrigger on Case (before update){
     if (trigger.isBefore && trigger.isUpdate) {
         CaseTriggerHandler.caseMethod(trigger.new, trigger.old, trigger.newMap, trigger.oldMap);
     }
 } */
+
+
+
+
+
+
+trigger CaseTrigger on Case (before insert){
+    CaseTriggerHandler.SameRecordUpdateCase(trigger.new);
+}
+
+
+
 
 
 

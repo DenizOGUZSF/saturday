@@ -1,7 +1,37 @@
-trigger OpportunityTrigger on Opportunity(before update){
-    OpportunityTriggerHandler.OOpMethod(trigger.new ,trigger.oldMap);
+trigger OpportunityTrigger on Opportunity(after update, after insert){
+    //ASSIGNEMNET SHET WEEK 7 PART 3 - A
+
+    if(Trigger.isAfter&& Trigger.isInsert){
+        //OpportunityTriggerHandler.future1(trigger.newMap.keySet());
+
+        //OR id param pass etmek icin
+        set<id> ac = new set<id>();
+        if(trigger.isAfter) {
+            if(trigger.isInsert) {
+                for (Opportunity eachopp : trigger.new) {
+                    ac.add(eachopp.AccountId);
+                }
+            }
+            
+        }
+        OpportunityTriggerHandler.future1(ac);
+
+    }
 
 }
+
+
+
+
+
+/* Print the new and old field values for (Opportunity Name and Amount) fields whenever
+an opportunity is updated. */
+/* trigger OpportunityTrigger on Opportunity(before update){
+    OpportunityTriggerHandler.OOpMethod(trigger.new ,trigger.oldMap);
+
+} */
+
+
 
 
 
@@ -44,7 +74,8 @@ trigger OpportunityTrigger on Opportunity(before update){
 
 
 
-
+/* When the StageName of an opportunity is updated, then print the value of description
+field and opportunity name */
 /* trigger OpportunityTrigger on Opportunity (after insert) {
 
     if(trigger.isAfter && trigger.isInsert)

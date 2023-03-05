@@ -1,7 +1,11 @@
 public with sharing class AccountTriggerHandler {
    
 
-    public  static void Method1(List<Account> AccTrgNew) {
+/* Whenever a New Account Record is created, an associated Contact Record must be created
+automatically. Contact record fields as below:
+- Account name as Contact last name
+- Account phone as contact phone */
+public  static void Method1(List<Account> AccTrgNew) {
         List<Contact> ListCon=new List<Contact>();
         for (Account eachAcc: AccTrgNew) {
            Contact c=new Contact();
@@ -13,6 +17,9 @@ public with sharing class AccountTriggerHandler {
          insert ListCon;
      }
 
+/*  Write a trigger on the Account when the Account is updated, check all opportunities related to
+the account. Update all Opportunity Stage to close lost if stage name not already set to closed
+won */
      public static void Method2(List<Account> AccTrgnew2) {
         set<id> accid = new set<id>();
         for (Account acc : AccTrgnew2) {
@@ -24,6 +31,12 @@ public with sharing class AccountTriggerHandler {
        }
        update AccOpp;
     }
+
+    /* Whenever an Account phone number is modified, update all the contacts of the Account as
+    follows:
+    - Contacts otherPhone as Old phone no of account
+    - Contacts mobilePhone as New phone no of Account.
+     */
 
 
     //EMRE METHOD3 ALTERNATIVE bu method3le ayni
@@ -59,6 +72,24 @@ public with sharing class AccountTriggerHandler {
         eachCon.MobilePhone = newMap.get(eachCon.AccountId).Phone;
     }
     update Con;
+    }
+
+
+
+    /* When the Annual revenue value of an Account is reduced from the previous value then show the
+    following message:
+    ‘Annual Revenue for an account cannot be reduced’. And do not allow the user to save the
+    record */
+
+    public static void method4(List<Account> acctrgnew, Map<id, Account> accoldmap) {
+        for(Account eachacc: acctrgnew){
+            if(eachacc.AnnualRevenue < accoldmap.get(eachacc.id).AnnualRevenue){
+                eachacc.AnnualRevenue.addError('Annual Revenue for an account cannot be reduced');
+
+            }
+        }
+
+        
     }
 
 

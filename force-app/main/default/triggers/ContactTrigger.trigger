@@ -1,5 +1,10 @@
 
-trigger ContactTrigger on Contact (After insert) {
+//Week 6 extra part 2-2  
+    //When a new contact is created for an existing account then set contact other phone as account  phone
+trigger ContactTrigger on Contact (before insert) {
+
+    ContactTriggerHandler.contactPhonefromAccount(trigger.new);
+
 
 
 }
